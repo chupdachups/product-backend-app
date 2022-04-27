@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.msa.product.dto.ProductDto;
 import com.msa.product.service.ProductService;
 
+import reactor.core.publisher.Mono;
+
 @RestController
 @RequestMapping("products")
 public class ProductController {
@@ -44,9 +46,8 @@ public class ProductController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public ResponseEntity<?> saveProduct(@RequestBody @Valid final ProductDto.SaveReq dto) {
-		productService.create(dto);
-		return ResponseEntity.ok(true);
+	public Mono<String> saveProduct(@RequestBody @Valid final ProductDto.SaveReq dto) {
+		return productService.create(dto);
 	}
 	
 	@RequestMapping(value = "/{productId}", method = RequestMethod.DELETE)
@@ -55,5 +56,5 @@ public class ProductController {
 		productService.delete(productId);
 		return ResponseEntity.ok(true);
 	}
-
+	
 }

@@ -1,0 +1,7 @@
+my-service:
+  account:
+    host: localhost
+    port: 8070
+  reserve:
+    host: localhost
+    port: 8072
