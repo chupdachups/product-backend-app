@@ -32,7 +32,6 @@ public class ProductController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ProductDto.Res> getProducts() {
-		log.debug("test");
 	    return productService.findAllProduct().stream()
 	    		.map(m -> new ProductDto.Res(m))
 	    		.collect(Collectors.toList());
