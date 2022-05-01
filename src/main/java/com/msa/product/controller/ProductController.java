@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.msa.product.dto.ProductDto;
 import com.msa.product.service.ProductService;
 
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @RestController
 @RequestMapping("products")
+@Slf4j
 public class ProductController {
 	
 	@Autowired
@@ -30,6 +32,7 @@ public class ProductController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ProductDto.Res> getProducts() {
+		log.debug("test");
 	    return productService.findAllProduct().stream()
 	    		.map(m -> new ProductDto.Res(m))
 	    		.collect(Collectors.toList());
