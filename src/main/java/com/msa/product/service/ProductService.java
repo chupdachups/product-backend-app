@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,14 +21,11 @@ import reactor.core.publisher.Mono;
 @Slf4j
 public class ProductService {
 	
-	@Value("${my-service.reserve.host}")
-	private String reserveHost;
-	
-	@Value("${my-service.reserve.port}")
-	private String reservePort;
-	
 	@Autowired
 	private ProductRepository productRepository;
+	
+	@Autowired
+	private WebClient webClient;
 	
 	@Transactional(readOnly = true)
 	public List<Product> findAllProduct() {
@@ -51,15 +47,31 @@ public class ProductService {
 		jsonReq.put("productName", product.getProductName());
 		jsonReq.put("price", product.getPrice());
 		
-		WebClient webClient = WebClient.builder()
-				.baseUrl("http://"+this.reserveHost+":"+this.reservePort)
-				.build();
-		
-		return webClient.post()
+		return this.webClient.post()
 				.uri("/product")
 				.accept(MediaType.APPLICATION_JSON)
 				.bodyValue(jsonReq)
 				.retrieve()
 				.bodyToMono(String.class);
+		
+//		Span nextSpan = this.tracer.nextSpan().name("client");
+		
+//		return Mono.just(nextSpan)
+//				.doOnNext(span -> this.tracer.withSpan(span.start()))
+//				.flatMap(span -> {
+//					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
+//					return this.webClient.post().uri("/product").accept(MediaType.APPLICATION_JSON).bodyValue(jsonReq).retrieve().bodyToMono(String.class);
+//				})
+//				.doFinally(signalType -> nextSpan.end());
+		
+//		return Mono.just(nextSpan)
+//				.doOnNext(span -> this.tracer.withSpan(span.start()))
+//				.flatMap(span -> {
+//					log.info("<ACCEPTANCE_TEST> <TRACE:{}> Hello from consumer", this.tracer.currentSpan().context().traceId());
+//					return this.webClient.get().retrieve().bodyToMono(String.class);
+//				})
+//				.doFinally(signalType -> nextSpan.end());
 	}
+	
+	
 }
