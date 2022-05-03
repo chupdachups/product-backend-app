@@ -49,6 +49,7 @@ public class ProductController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseStatus(value = HttpStatus.CREATED)
 	public Mono<String> saveProduct(@RequestBody @Valid final ProductDto.SaveReq dto) {
+		log.info("product-service creatProduct call");
 		return productService.create(dto);
 	}
 	
