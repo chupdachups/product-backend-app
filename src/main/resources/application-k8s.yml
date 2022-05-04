@@ -1,0 +1,7 @@
+my-service:
+  account:
+    host: account-service.msa-class.svc.cluster.local
+    port: 8070
+  reserve:
+    host: reserve-service.msa-class.svc.cluster.local
+    port: 8072
