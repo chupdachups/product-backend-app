@@ -12,7 +12,7 @@ public class WebConfig implements WebFluxConfigurer {
 	public void addCorsMappings(CorsRegistry registry) {
 		// TODO Auto-generated method stub
 		//WebMvcConfigurer.super.addCorsMappings(registry);
-		registry.addMapping("/**").allowedOrigins("http://localhost:8080")
+		registry.addMapping("/**").allowedOrigins("*")
 			.allowedMethods(
 		    	HttpMethod.GET.name(),
 		    	HttpMethod.HEAD.name(),
